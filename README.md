@@ -8,6 +8,10 @@ This repository contains a microservice-based application deployed across multip
 
 ## Project Structure
 
+### Architecture
+![image](https://github.com/user-attachments/assets/4b7a20f3-41dd-4601-ae85-792ac6fa3459)
+
+
 The repository is organized as follows:
 
 - **`api-gateway/`**: Contains the source code and configuration for the API Gateway microservice.
