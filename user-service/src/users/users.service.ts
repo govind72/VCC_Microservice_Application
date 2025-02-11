@@ -11,30 +11,10 @@ export class UserService {
     return this.users;
   }
 
-  findOne(id: number): User | undefined {
-    return this.users.find(user => user.id === id);
-  }
-
   create(name: string, email: string): User {
     const newUser: User = { id: this.idCounter++, name, email };
     this.users.push(newUser);
     return newUser;
   }
 
-  update(id: number, name: string, email: string): User | null {
-    const user = this.findOne(id);
-    if (!user) return null;
-
-    user.name = name;
-    user.email = email;
-    return user;
-  }
-
-  delete(id: number): boolean {
-    const index = this.users.findIndex(user => user.id === id);
-    if (index === -1) return false;
-
-    this.users.splice(index, 1);
-    return true;
-  }
 }

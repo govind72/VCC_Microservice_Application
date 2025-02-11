@@ -1,27 +1,20 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { BooksService } from './books.service';
-import { Book } from './nook.model';
+import { Book } from './book.model';
 
-@Controller('books')
+@Controller()
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
-  @Get()
+  @MessagePattern({ cmd: 'get_books' }) // Handle the "get_books" message
   findAll(): Book[] {
     return this.booksService.findAll();
   }
 
-  @Get(':id')
-  findById(@Param('id') id: string): Book {
-    return this.booksService.findById(Number(id));
-  }
-
-  @Post()
-  createBook(
-    @Body('title') title: string,
-    @Body('author') author: string,
-    @Body('publishedYear') publishedYear: number,
-  ): Book {
+  @MessagePattern({ cmd: 'create_book' }) // Handle the "create_book" message
+  createBook(data: { title: string; author: string; publishedYear: number }): Book {
+    const { title, author, publishedYear } = data;
     return this.booksService.createBook(title, author, publishedYear);
   }
 }

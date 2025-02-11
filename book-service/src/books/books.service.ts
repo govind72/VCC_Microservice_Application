@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Book } from './nook.model';
+import { Book } from './book.model';
 
 @Injectable()
 export class BooksService {

@@ -1,37 +1,19 @@
-import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { UserService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
-@Controller('users')
+@Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get()
+  @MessagePattern({ cmd: 'get_users' }) // Handle the "get_users" message
   findAll() {
     return this.userService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    const user = this.userService.findOne(Number(id));
-    if (!user) {
-      return { message: 'User not found' };
-    }
-    return user;
-  }
-
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  @MessagePattern({ cmd: 'create_user' }) // Handle the "create_user" message
+  create(createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto.name, createUserDto.email);
-  }
-
-
-  @Delete(':id')
-  delete(@Param('id') id: string) {
-    const success = this.userService.delete(Number(id));
-    if (!success) {
-      return { message: 'User not found' };
-    }
-    return { message: 'User deleted successfully' };
   }
 }

@@ -1,15 +1,13 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
-import { ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservices';
-
+import { ClientProxy } from '@nestjs/microservices';
+import { Inject } from '@nestjs/common';
 @Controller()
 export class AppController {
-  private userService: ClientProxy;
-  private bookService: ClientProxy;
 
-  constructor() {
-    this.userService = ClientProxyFactory.create({ transport: Transport.TCP, options: { host: 'localhost', port: 3001 } });
-    this.bookService = ClientProxyFactory.create({ transport: Transport.TCP, options: { host: 'localhost', port: 3002 } });
-  }
+  constructor(
+    @Inject('USER_SERVICE') private readonly userService: ClientProxy,
+    @Inject('BOOK_SERVICE') private readonly bookService: ClientProxy,
+  ) {}
 
   @Get()
   getHello(): string {
